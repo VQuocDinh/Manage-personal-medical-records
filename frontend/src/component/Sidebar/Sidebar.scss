@@ -1,0 +1,28 @@
+@import '../../assets/var';
+
+.sidebar {
+    box-shadow: 0 0 6px #a4a4a4;
+
+    .profile {
+        text-align: center;
+        
+        img {
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+            border: 3px solid $primary-color;
+        }
+    }
+
+    .list-group {
+
+        .list-group-item {
+            &:hover {
+                cursor: pointer;
+                background-color: #f1f0f0;
+            }
+        }
+    }
+
+    
+}

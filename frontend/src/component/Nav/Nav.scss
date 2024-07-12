@@ -1,0 +1,27 @@
+@import '../../assets/var';
+.navbar {
+    background-color: $light__blue-color;
+    border-radius: 10px;
+    margin: 32px 0;
+    padding: 12px;
+
+    .nav__logo {
+        height: 32px;
+    
+    }
+
+    .btn {
+        background-color: $primary-color;
+        color: $white-color;
+    }
+
+    .nav__avt {
+        width: 38px;
+        height: 38px;
+        object-fit: cover;
+        border: 2px solid $primary-color;
+    }
+}
+
+
+
