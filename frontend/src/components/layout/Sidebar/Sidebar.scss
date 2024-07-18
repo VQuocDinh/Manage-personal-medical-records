@@ -1,0 +1,39 @@
+@import '../../../assets/style/var.scss';
+
+.sidebar {
+    box-shadow: 0 0 16px #e2e2e2;
+    border-radius: 24px;
+
+    .profile {
+
+        img {
+            height: 150px;
+            width: 150px;
+            object-fit: cover;
+            border: 6px solid #f0f5ff;
+        }
+
+        .infor {
+            display: flex;
+            flex-direction: column;
+
+            h3 {
+                font-weight: 900;
+            }
+        }
+
+    }
+
+    .list-group {
+        border-radius: 24px;
+
+        .list-group-item {
+            &:hover {
+                cursor: pointer;
+                background-color: #f1f0f0;
+            }
+        }
+    }
+
+
+}

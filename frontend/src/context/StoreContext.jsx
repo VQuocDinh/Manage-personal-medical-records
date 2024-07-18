@@ -6,29 +6,29 @@ export const StoreContext = createContext(null)
 const StoreContextProvider = (props) => {
     const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:3000'
 
-    const [user_list, setUserList] = useState([])
+    const [staff_list, setStaffList] = useState([])
 
-    const fetchAllUsers = async () => {
+    const fetchAllStaffs = async () => {
         try {
-            const userRes = await axios.get(`${baseUrl}/api/user/getUser`)
-            if (userRes.data.success) {
-                setUserList(userRes.data.data)
+            const staffRes = await axios.get(`${baseUrl}/api/staff/getStaff`)
+            if (staffRes.data.success) {
+                console.log(staffRes.data.data)
+                setStaffList(staffRes.data.data)
             }
         } catch (error) {
-            console.error('Error fetching user list', error)
+            console.error('Error fetching staff list', error)
         }
-
     }
 
     useEffect(() => {
         const loadData = async () => {
-            await fetchAllUsers();
+            await fetchAllStaffs();
         };
         loadData();
     }, []);
 
     const contextValue = {
-        user_list,
+        staff_list,
 
     };
 
