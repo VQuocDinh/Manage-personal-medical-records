@@ -1,58 +1,105 @@
-import React, { useState, useEffect } from 'react'
-import './Navbar.scss'
+import React, { useState, useEffect } from "react";
+import logo from "../../../assets/image/logo-no-bgr.png";
+import { useNavigate } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 
-import { useNavigate } from 'react-router-dom';
+import "./Navbar.scss";
+
 const Nav = () => {
   const navigate = useNavigate();
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState("");
+  const [isSelected, setIsSelected] = useState("Home");
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
     }
   }, []);
 
-  const logout = () => {
-    localStorage.removeItem("token")
-    setToken("")
-    navigate('/')
-}
+  const handleLogout = () => {
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    if (confirmed) {
+      localStorage.removeItem("token");
+      setToken("");
+      navigate("/");
+    }
+  };
+
+  const handleNavigation = (route, selected) => {
+    navigate(route);
+    setIsSelected(selected);
+  };
 
   return (
-    <div className='container'>
-      <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+    <div className="d-flex align-items-center justify-content-center">
+      <nav className="navbar navbar-expand-lg rounded-4 w-50">
+        <div className="container-fluid">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class=" collapse navbar-collapse" id="navbarTogglerDemo01">
-            <img className="nav__logo me-3" src='' alt="navbar logo" />
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Service</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <img
+              onClick={() => navigate("home")}
+              className="nav__logo me-3"
+              src={logo}
+              alt="navbar logo"
+            />
+
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              {["Home", "Healthcare", "Patients"].map((item, index) => (
+                <li className="nav-item" key={index}>
+                  <button
+                    onClick={() => handleNavigation(item.toLowerCase(), item)}
+                    className={`nav-link ${isSelected === item ? "active" : ""}`}
+                    aria-current={isSelected === item ? "page" : undefined}
+                  >
+                    {item}
+                  </button>
+                </li>
+              ))}
+              <li className="nav-item">
+                <button className="nav-link disabled" aria-disabled="true">
+                  Disabled
+                </button>
               </li>
             </ul>
+
             {!token ? (
-              <>
-                <button onClick={() => navigate('/login')} className='me-3'>Login</button>
-              </>
+              <div className="login">
+                <button onClick={() => navigate("/")} className="me-3">
+                  Login
+                </button>
+              </div>
             ) : (
-              <img onClick={logout} src='' alt="" className='nav__avt me-3 rounded-circle' />
+              <div className="auth d-flex align-items-center">
+                <FaUserCircle size={32} className="text-secondary" />
+                <ul className="select">
+                  <span>My profile</span>
+                  <li onClick={() => navigate("/infor")} className="item">
+                    Personal Information
+                  </li>
+                  <li onClick={handleLogout} className="item">
+                    Log out
+                  </li>
+                </ul>
+              </div>
             )}
-            <button class="btn" type="submit">Book Now</button>
           </div>
         </div>
       </nav>
-    </div>
-  )
-}
 
-export default Nav
+    </div>
+  );
+};
+
+export default Nav;

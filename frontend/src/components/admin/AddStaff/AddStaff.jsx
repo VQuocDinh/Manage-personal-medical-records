@@ -5,6 +5,9 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
 const AddStaff = () => {
+
+  
+
   const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
   const [formValues, setFormValues] = useState({
     email: "",
@@ -44,7 +47,7 @@ const AddStaff = () => {
   };
 
   return (
-    <div className="add-staff p-3 mt-5">
+    <div className="add-staff p-5 mt-5">
       <h1>Add Staff</h1>
       <form
         onSubmit={handleSubmit}
@@ -163,7 +166,7 @@ const AddStaff = () => {
           </div>
 
           <div className="col-12 ">
-            <button className="btn btn-primary" type="submit">
+            <button className="btn btn-primary mt-5" type="submit">
               Add new staff
             </button>
           </div>

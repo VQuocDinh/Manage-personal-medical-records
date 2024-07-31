@@ -6,18 +6,18 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const HealthIndicatorsChart = ({ data }) => {
   const chartData = {
-    labels: data.map(item => item.date),
+    labels: data.map(item => item.date_joined),
     datasets: [
       {
         label: 'Blood Pressure',
-        data: data.map(item => item.bloodPressure),
+        data: data.map(item => item.full_name),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         fill: true,
       },
       {
         label: 'Heart Rate',
-        data: data.map(item => item.heartRate),
+        data: data.map(item => item.phone),
         borderColor: 'rgba(153, 102, 255, 1)',
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
         fill: true,

@@ -1,43 +1,83 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
-export const StoreContext = createContext(null)
+export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:3000'
+  const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+  const [theme, setTheme] = useState("light");
+  const [staffList, setStaffList] = useState([]);
+  const [patientList, setPatientList] = useState([]);
+  const [accountList, setAccountList] = useState([]);
+  const [healthIndicatorList, setHealthIndicatorList] = useState([]);
 
-    const [staff_list, setStaffList] = useState([])
-
-    const fetchAllStaffs = async () => {
-        try {
-            const staffRes = await axios.get(`${baseUrl}/api/staff/getStaff`)
-            if (staffRes.data.success) {
-                console.log(staffRes.data.data)
-                setStaffList(staffRes.data.data)
-            }
-        } catch (error) {
-            console.error('Error fetching staff list', error)
-        }
+  const fetchAllStaff = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/staff/get`);
+      if (response.data.success) {
+        setStaffList(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching staff list", error);
     }
+  };
 
-    useEffect(() => {
-        const loadData = async () => {
-            await fetchAllStaffs();
-        };
-        loadData();
-    }, []);
+  const fetchAllPatient = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/patient/get`);
+      if (response.data.success) {
+        setPatientList(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching staff list", error);
+    }
+  };
 
-    const contextValue = {
-        staff_list,
+  const fetchAllAccount = async () => {
+    try {
+      const res = await axios.get(`${baseUrl}/api/account/get`);
+      if (res.data.success) {
+        setAccountList(res.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching account list", error);
+    }
+  };
 
-    };
+  const fetchAllIndicators = async ()=>{
+    try {
+      const res = await axios.get(`${baseUrl}/api/health-indicator/get`)
+      if (res.data.success){
+        setHealthIndicatorList(res.data.data)
+      }
+    } catch (error) {
+      console.error("Error fetching health indicators list", error);
 
-    return (
-        <StoreContext.Provider value={contextValue}>
-            {props.children}
-        </StoreContext.Provider>
-    );
+    }
+  }
 
-}
+  useEffect(() => {
+    fetchAllStaff();
+    fetchAllPatient();
+    fetchAllAccount();
+    fetchAllIndicators()
+    // fetchHealthIndicatorsByPatient()
+  }, []);
 
-export default StoreContextProvider
+  const contextValue = {
+    theme,
+    setTheme,
+    staffList,
+    patientList,
+    accountList,
+    healthIndicatorList,
+  };
+
+  return (
+    <StoreContext.Provider value={contextValue}>
+      {props.children}
+    </StoreContext.Provider>
+  );
+};
+
+export default StoreContextProvider;

@@ -22,12 +22,10 @@ const Chart = () => {
   }, []);
 
   return (
-    <div className="chart p-4">
+    <div className="chart p-5">
       <h1 className="fw-900 mt-5">Patient Health Indicators</h1>
-      <div className="">
-       
-      </div>
-      <div className="w-100">
+      <div className=""></div>
+      <div className="w-100 mt-5">
         <HealthIndicatorsChart data={healthData} />
       </div>{" "}
     </div>

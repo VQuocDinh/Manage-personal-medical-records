@@ -112,4 +112,15 @@ const getStaffById = async (req, res) => {
   }
 };
 
-export { getStaff, deleteStaff, addStaff, editStaff, getStaffById };
+const getByName = async(req, res ) =>{
+  const name = req.body.full_name
+  try {
+    const staff = await staffModel.getByName(name)
+    res.json({ success: true, data: staff })
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    
+  }
+}
+
+export { getStaff, deleteStaff, addStaff, editStaff, getStaffById, getByName };

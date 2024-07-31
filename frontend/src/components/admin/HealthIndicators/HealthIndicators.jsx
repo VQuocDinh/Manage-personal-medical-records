@@ -1,35 +1,67 @@
-import React, { useEffect, useState } from "react";
-import "./HealthIndicators.scss";import { MdEdit } from "react-icons/md";
+import React, { useContext, useEffect, useState } from "react";
+import "./HealthIndicators.scss";
+import { MdEdit } from "react-icons/md";
 import { FaTrashCan } from "react-icons/fa6";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
+import { StoreContext } from "../../../context/StoreContext";
 
 const HealthIndicators = () => {
   const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
-  const [indicators_list, setIndicatorsList] = useState([]);
   const navigate = useNavigate();
-  useEffect(()=>{
-    const getAllIndicators = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}/api/indicator/get`);
-        console.log(res.data.success)
-        if (res.data.success) {
-          setIndicatorsList(res.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching health indicators list", error);
+  const [searchInput, setSearchInput] = useState("");
+  const { healthIndicatorList } = useContext(StoreContext);
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      console.log("searchInput:", searchInput);
+      const full_name = searchInput;
+      const res = await axios.post(`${baseUrl}/api/staff/search`, {
+        full_name,
+      });
+      if (res.data.success) {
+        setStaffList(res.data.data);
+      } else {
+        console.log(res.data.message);
       }
-    };
-    getAllIndicators()
-  },[])
-  
+    } catch (error) {
+      console.log("Failed to search staff.", error);
+    }
+  };
+  const handleChange = (e) => {
+    setSearchInput(e.target.value);
+    console.log(searchInput);
+  };
   return (
-    <div className="health-indicator p-4 d-flex justify-content-center flex-column">
-      <h1 className="mt-5 fw-900">Health indicators</h1>
+    <div className="health-indicator p-5 d-flex justify-content-center flex-column">
+      <div className="d-flex align-items-center justify-content-between">
+        <h1 className="fw-900">Health indicators</h1>
 
-      <div className="d-flex justify-content-between align-items-center mt-3">
-        <ul className="nav d-flex gap-4">
+        <form action="" onSubmit={handleSearch}>
+          <div class="input-group d-flex gap-3 w-100 border border-1 rounded-5">
+            <input
+              type="search"
+              class="form-control rounded-5 border-0"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="search-addon"
+              value={searchInput}
+              onChange={handleChange}
+            />
+            <button
+              type="submit"
+              class="input-group-text border-0 rounded-5 w-25 d-flex justify-content-center"
+              id="search-addon"
+            >
+              <CiSearch />
+            </button>
+          </div>
+        </form>
+      </div>
+      <div className="d-flex justify-content-between align-items-center mt-4">
+        {/* <ul className="nav d-flex gap-4">
           <li className="nav-item ">
             <a
               className="text-black nav-link active p-0"
@@ -57,28 +89,26 @@ const HealthIndicators = () => {
               Records Users
             </a>
           </li>
-        </ul>
-        <div
+        </ul> */}
+        <button
           onClick={() => navigate("/admin/add-staff")}
-          className="fw-900 add-staff"
+          className="btn fw-900 add-staff ms-auto"
         >
           Add health indicator
-        </div>
+        </button>
       </div>
 
-      <table className="table table-hover m-3">
+      <table className="table table-hover mt-4 table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Unit</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {indicators_list.map((item) => (
+          {healthIndicatorList.map((item) => (
             <tr key={item.indicator_id}>
-              <td>{item.indicator_id}</td>
               <td>{item.name}</td>
               <td>{item.unit}</td>
               <td>

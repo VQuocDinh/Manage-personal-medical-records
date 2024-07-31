@@ -1,15 +1,16 @@
 import { RouterProvider } from "react-router-dom";
-import router from './routes/router.jsx';
-import StoreContextProvider from "./context/StoreContext.jsx";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import router from "./routes/router.jsx";
+import StoreContextProvider, { StoreContext } from "./context/StoreContext.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
+import './assets/style/index.scss'
+import { useContext } from "react";
 
 function App() {
-    return (
-        <div className='app '>
-            <StoreContextProvider>
-                <RouterProvider router={router} />
-            </StoreContextProvider>
-        </div>
-    )
+  const { theme } = useContext(StoreContext);
+  return (
+      <div className="app " data-theme={theme}>
+        <RouterProvider router={router} />
+      </div>
+  );
 }
-export default App
+export default App;

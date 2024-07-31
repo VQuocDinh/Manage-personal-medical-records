@@ -1,29 +1,35 @@
-@import './var.scss';
+@import "./var.scss";
 
 .login-signup {
-    height: 100vh;
-    background: url(\login-bgr2.jpg) no-repeat fixed center / cover;
-    display: flex;
-    align-items: center;
+  height: 100vh;
+  background: url(../image/bgrLogin.png) no-repeat center / cover;
+  background-size: 350px 900px;
+  background-position-x: right;
+  display: flex;
+  align-items: center;
 }
 
 .form__container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 800px;
-    width: 700px;
-    margin-left: 80px;
-    background-color: rgba(255, 255, 255, 0.25);
-    border-radius: 24px;
-    backdrop-filter: blur(24px);
-    padding: 64px;
+  position: relative;
+  animation: mymove 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  // background-color: rgba(255, 255, 255, 0.25);
+  // border-radius: 24px;
+  // backdrop-filter: blur(24px);
+  padding-right: 64px;
 
-    a {
-        color: $primary-color;
-    }
-    
-    .error {
-        color: red;
-    }
+  a {
+    color: $primary-color;
+    text-decoration: none;
+  }
+
+  .error {
+    color: red;
+  }
+}
+
+@keyframes mymove {
+  from {left: -500px;}
+  to {left: 0;}
 }

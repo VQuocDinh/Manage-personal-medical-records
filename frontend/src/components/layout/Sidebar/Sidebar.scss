@@ -1,39 +1,60 @@
-@import '../../../assets/style/var.scss';
+@import "../../../assets/style/var.scss";
 
 .sidebar {
-    box-shadow: 0 0 16px #e2e2e2;
-    border-radius: 24px;
+  // width: 400px;
+  // height: 100vh;
 
-    .profile {
-
-        img {
-            height: 150px;
-            width: 150px;
-            object-fit: cover;
-            border: 6px solid #f0f5ff;
-        }
-
-        .infor {
-            display: flex;
-            flex-direction: column;
-
-            h3 {
-                font-weight: 900;
-            }
-        }
-
+  .profile {
+    &:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+    img {
+      height: 40px;
+    width: 40px;
+    object-fit: cover;
     }
 
-    .list-group {
-        border-radius: 24px;
+    .logout-modal {
+      padding: 0;
+      position: absolute;
+      top: -150px;
+      right: 0;
+      left: 0;
+      background-color: #eeeeee;
+      list-style: none;
+      border-radius: 24px;
+      overflow: hidden;
+      li {
+      padding: 10px;
 
-        .list-group-item {
-            &:hover {
-                cursor: pointer;
-                background-color: #f1f0f0;
-            }
+        &:hover {
+          background-color: #ccc;
         }
+      }
     }
 
+  }
 
+  .list-group {
+    .list-group-item {
+      background-color: transparent;
+      color: var(--primary-text-color);
+      border: none;
+      &:hover {
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 900;
+      }
+    }
+
+    .isActive {
+      font-size: large;
+      font-weight: 900;
+    }
+  }
+
+  .user-name {
+    color: var(--primary-text-color);
+  }
 }

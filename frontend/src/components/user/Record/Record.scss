@@ -1,0 +1,50 @@
+/* Record.css */
+.record-medical {
+    background-color: #f8f9fa; /* Light background for a clean look */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .patient-info, .health-indicators {
+    background-color: white; /* White background for sections */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .indicator-container {
+    position: relative;
+  }
+  
+  .indicator-header {
+    border-bottom: 2px solid #007bff; /* Blue underline for header */
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .indicator-item {
+    padding: 8px;
+    border-bottom: 1px solid #e9ecef; /* Light divider for items */
+  }
+  
+  .indicator-item:last-child {
+    border-bottom: none; /* Remove border from last item */
+  }
+  
+  .img-fluid {
+    max-width: 100%;
+    height: auto; /* Responsive image */
+  }
+  
+  .btn {
+    margin-top: 10px; /* Spacing for the button */
+  }
+  
+  h4 {
+    color: #343a40; /* Darker text color for headings */
+  }
+  
+  p {
+    margin: 5px 0; /* Consistent margin for paragraphs */
+  }
