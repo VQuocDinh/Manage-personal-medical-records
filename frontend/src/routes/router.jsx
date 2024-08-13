@@ -5,6 +5,10 @@ import Home from "../components/user/Home/Home";
 import Patients from "../components/user/Patients/Patients";
 import AddPatient from "../components/user/AddPatient/AddPatient";
 import PatientDetail from "../components/user/PatientDetail/PatientDetail";
+import Appointments from "../components/user/Appointments/Appointments";
+import PatientRecordsDetail from "../components/user/PatientRecordsDetail/PatientRecordsDetail";
+import Cure from "../components/user/Cure/Cure";
+import Department from "../components/admin/Deparment/Deparment";
 
 const LoginSignUp = lazy(() => import("../page/LoginSignup"));
 const Information = lazy(() => import("../page/Information"));
@@ -70,7 +74,15 @@ const router = createBrowserRouter([
             <Staff />
           </Suspense>
         ),
+      },{
+        path: "departments",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            < Department/>
+          </Suspense>
+        ),
       },
+      
       {
         path: "add-staff",
         element: (
@@ -163,6 +175,30 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "patient-records-detail/:patientRecordsId",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <PatientRecordsDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: "cure/:patientRecordsId",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Cure />
+          </Suspense>
+        ),
+      },
+      {
+        path: "patient-records/:patient_records_id",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <PatientRecordsDetail />
+          </Suspense>
+        ),
+      },
+      {
         path: "face-recognition",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
@@ -170,6 +206,15 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "appointments",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Appointments />
+          </Suspense>
+        ),
+      },
+      
       {
         path: "healthcare",
         element: (

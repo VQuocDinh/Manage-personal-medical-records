@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('patients', {
+  const Patient =  sequelize.define('patients', {
     patient_id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     phone_number: {
       type: DataTypes.STRING(45),
-      allowNull: false
+      allowNull: true
     },
     cccd: {
       type: DataTypes.STRING(45),
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     date_of_birth: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: true
     },
     avatar: {
       type: DataTypes.STRING(255),
@@ -44,11 +44,23 @@ module.exports = function(sequelize, DataTypes) {
     address: {
       type: DataTypes.STRING(255),
       allowNull: true
+    },
+    emergency_contact_name: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
+    emergency_contact_phone: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
+    blood_type: {
+      type: DataTypes.STRING(45),
+      allowNull: true
     }
   }, {
     sequelize,
     tableName: 'patients',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
@@ -60,4 +72,9 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+  Patient.associate = function(models) {
+    Patient.hasMany(models.patient_records, { foreignKey: 'patient_id'});
+    Patient.hasMany(models.appointments, { foreignKey: 'patient_id'});
+  };
+  return Patient
 };

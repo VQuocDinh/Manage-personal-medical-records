@@ -1,20 +1,14 @@
 import React, { useContext, useState } from "react";
-import "./Overview.scss";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 import doctorImg from "../../../assets/image/doctor3d.png";
-import { CiSearch } from "react-icons/ci";
-import { FaUsers } from "react-icons/fa";
-import { IoBedOutline } from "react-icons/io5";
-import { FaBedPulse } from "react-icons/fa6";
-import { HiMiniUsers } from "react-icons/hi2";
-import HealthIndicatorsChart from "../../common/HealthIndicatorsChart";
-import { StoreContext } from "../../../context/StoreContext";
+import { FaSearch } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 import MyLineChart from "../../common/LineChart";
+import "react-calendar/dist/Calendar.css";
+import "./Overview.scss";
 
 const Overview = () => {
   const [searchInput, setSearchInput] = useState("");
-  const { staffList } = useContext(StoreContext);
 
   const handleChange = (e) => {
     setSearchInput(e.target.value);
@@ -42,48 +36,51 @@ const Overview = () => {
   return (
     <div className="overview d-flex flex-column p-5 h-100 gap-4">
       <div className="d-flex justify-content-between">
-        <h2 className="fw-900 d-flex gap-2">
+        <h2 className="fw-bold d-flex gap-2">
           Good Morning, <span className="text-primary">Dr.Dinh</span>
         </h2>
 
-        <div className="d-flex align-items-center justify-content-between">
+        <div className="d-flex align-items-center gap-3">
+          <FaBell size={22}/>
+
           <form action="" onSubmit={handleSearch}>
-            <div class="input-group d-flex gap-3 w-100 border border-1 rounded-5">
+            <div class="input-group d-flex  w-100 border rounded-2">
               <input
                 type="search"
-                class="form-control rounded-5 border-0"
+                className="form-control border-0"
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="search-addon"
                 value={searchInput}
                 onChange={handleChange}
+                required
               />
               <button
                 type="submit"
-                class="input-group-text border-0 rounded-5 w-25 d-flex justify-content-center"
+                class="btn btn-secondary input-group-text border-1 w-25 d-flex justify-content-center mt-0"
                 id="search-addon"
               >
-                <CiSearch />
+                <FaSearch />
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      <div className="d-flex w-100 gap-4">
-        <div className="w-75 d-flex flex-column gap-4">
-          <div className="header rounded-5 p-5 position-relative">
+      <div className="d-flex w-100 gap-2">
+        <div className="w-75 d-flex flex-column gap-2">
+          <div className="header rounded-3 p-5 position-relative">
             <h3 className="fw-bold">Visits for Today</h3>
-            <span className="fs-5">1110</span>
+            <span className="fs-5">10</span>
             <div className="d-flex gap-4 mt-4">
-              <div className="rounded-5 d-flex flex-column bg-white p-4">
+              <div className="rounded-3 d-flex flex-column bg-white p-4">
                 <span className="fw-bolder">New Patiens</span>
                 <span>40</span>
               </div>
 
-              <div className="rounded-5 d-flex flex-column bg-white p-4">
+              <div className="rounded-3 d-flex flex-column bg-white p-4">
                 <span className="fw-bolder">Old Patiens</span>
-                <span>1070</span>
+                <span>20</span>
               </div>
             </div>
             <img
@@ -93,48 +90,27 @@ const Overview = () => {
             />
           </div>
 
-          <div className="d-flex w-100 gap-4">
+          <div className="d-flex w-100 gap-4 border border-1 p-3 rounded-3">
             <div className="w-100 chart">
-              <h4 className=" fw-900">Total number of patient</h4>
-              <MyLineChart />
-            </div>
-
-            {/* <div className="w-25 d-flex flex-column">
-              <h4 className="fw-900">Hopital Overview</h4>
-              <div className="d-flex flex-column gap-2 h-100">
-                <div className=" d-flex align-items-center justify-content-center gap-2 border border-primary text-primary rounded-5 p-3 ">
-                  <span>Total Staff</span>
-                  <span className="fw-bolder">900</span>
-                </div>
-
-                <div className=" d-flex align-items-center justify-content-center gap-2 border border-primary text-primary rounded-5 p-3 ">
-                  <span>Total Bed</span>
-                  <span className="fw-bolder">900</span>
-                </div>
-
-                <div className=" d-flex align-items-center justify-content-center gap-2 border border-primary text-primary rounded-5 p-3 ">
-                  <span>Total Surgery</span>
-                  <span className="fw-bolder">900</span>
-                </div>
-
-                <div className=" d-flex align-items-center justify-content-center gap-2 border border-primary text-primary rounded-5 p-3 ">
-                  <span>Total Patient</span>
-                  <span className="fw-bolder">900</span>
-                </div>
-
+              <h4 className=" fw-bold">Total number of patient</h4>
+              <div className="d-flex">
+                <MyLineChart />
+                <MyLineChart />
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
 
-        <div className="w-25 d-flex flex-column">
+        <div className="w-25 d-flex flex-column gap-2">
           <div className="calendar">
             <Calendar />
           </div>
-          <div className="read-daily mt-3 rounded-5 p-5 d-flex flex-column">
+          <div className="read-daily rounded-3 p-5 d-flex flex-column">
             <h4 className="fw-900">Daily Read</h4>
             <p>New rules in the dose of medicines to be consumed.</p>
-            <button className="mt-auto btn btn-primary rounded-5 ms-auto">Read now</button>
+            <button className="mt-auto btn btn-primary rounded-3 ms-auto">
+              Read now
+            </button>
           </div>
         </div>
       </div>

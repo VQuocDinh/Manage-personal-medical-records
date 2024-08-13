@@ -8,6 +8,7 @@ import axios from "axios";
 import DeleteConfirmation from "../../common/DeleteConfirmation";
 import { CiSearch } from "react-icons/ci";
 import { StoreContext } from "../../../context/StoreContext";
+import { FaSearch } from "react-icons/fa";
 
 const Staff = () => {
   const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
@@ -22,8 +23,8 @@ const Staff = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      console.log('searchInput:',searchInput);
-      const full_name = searchInput
+      console.log("searchInput:", searchInput);
+      const full_name = searchInput;
       const res = await axios.post(`${baseUrl}/api/staff/search`, {
         full_name,
       });
@@ -66,45 +67,55 @@ const Staff = () => {
 
   const handleDelete = async (staffId) => {
     try {
-      const response = await axios.post(`${baseUrl}/api/staff/delete`, {
-        staff_id: staffId,
-      });
+      const response = await axios.post(`${baseUrl}/api/staff/delete`, 
+        {staffId}
+      );
+      console.log(response)
       if (response.data.success) {
+        toast.success(response.data.message);
+
         setStaffList((prevList) =>
           prevList.filter((staff) => staff.staff_id !== staffId)
         );
-        toast.success(response.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Error deleting staff");
+      console.error(error)
+      toast.error(error.response?.data?.message || "Error deleting staff", error);
     }
   };
 
   return (
     <div className="staff p-5 d-flex justify-content-center flex-column">
-       <div className="d-flex align-items-center justify-content-between">
-        <h1 className="fw-900">Staffs</h1>
-
-        <form action="" onSubmit={handleSearch}>
-          <div class="input-group d-flex gap-3 w-100 border border-1 rounded-5">
-            <input
-              type="search"
-              class="form-control rounded-5 border-0" 
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="search-addon"
-              value={searchInput}
-              onChange={handleChange}
-            />
-            <button
-              type="submit"
-              class="input-group-text border-0 rounded-5 w-25 d-flex justify-content-center"
-              id="search-addon"
-            >
-              <CiSearch />
-            </button>
-          </div>
-        </form>
+      <div className="d-flex align-items-center justify-content-between">
+        <h1 className="fw-bold">Staffs</h1>
+        <div className=" d-flex gap-2">
+          <form action="" onSubmit={handleSearch}>
+            <div class="input-group d-flex w-100 border border-1 rounded-3 gap-1">
+              <input
+                type="search"
+                class="form-control rounded-3 border-0"
+                placeholder="Search"
+                aria-label="Search"
+                aria-describedby="search-addon"
+                value={searchInput}
+                onChange={handleChange}
+              />
+              <button
+                type="submit"
+                class="btn btn-secondary input-group-text border-1 w-25 d-flex justify-content-center mt-0"
+                id="search-addon"
+              >
+                <FaSearch />
+              </button>
+            </div>
+          </form>
+          <button
+            onClick={() => navigate("/admin/add-staff")}
+            className="fw-bold add-staff btn btn-primary m-0"
+          >
+            Add Staff
+          </button>
+        </div>
       </div>
 
       <div className="d-flex justify-content-between align-items-center mt-4">
@@ -124,7 +135,7 @@ const Staff = () => {
               className="text-black nav-link p-0"
               href="#"
             >
-              Records Managers
+              Doctor
             </a>
           </li>
           <li className="nav-item">
@@ -133,28 +144,23 @@ const Staff = () => {
               className="text-black nav-link p-0"
               href="#"
             >
-              Records Users
+              Nurse
             </a>
           </li>
         </ul>
-        <button
-          onClick={() => navigate("/admin/add-staff")}
-          className="fw-900 add-staff btn "
-        >
-          Add Staff
-        </button>
       </div>
 
       <table className="table table-hover mt-4 table-striped">
         <thead>
           <tr>
-            <th scope="col">Name</th>
+            <th scope="col">Full name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone number</th>
             <th scope="col">Gender</th>
             <th scope="col">Date of birth</th>
             <th scope="col">Address</th>
             <th scope="col">Position</th>
+            <th scope="col">Department</th>
             <th scope="col">Date joined</th>
             <th scope="col">Action</th>
           </tr>
@@ -171,6 +177,7 @@ const Staff = () => {
                   <td>{item.date_of_birth}</td>
                   <td>{item.address}</td>
                   <td>{item.position}</td>
+                  <td>{item.department.name}</td>
                   <td>{item.date_joined}</td>
                   <td>
                     <div className="hstack gap-2 fs-6">
@@ -179,14 +186,14 @@ const Staff = () => {
                         onClick={() =>
                           navigate(`/admin/edit-staff/${item.staff_id}`)
                         }
-                        className="btn btn-sm btn-primary"
+                        className="btn btn-sm btn-primary m-0"
                       >
                         <MdEdit />
                       </button>
                       <button
                         title="Delete"
                         onClick={() => handleShowModal(item.staff_id)}
-                        className="btn btn-sm btn-danger"
+                        className="btn btn-sm btn-danger m-0"
                       >
                         <FaTrashCan />
                       </button>

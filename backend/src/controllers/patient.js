@@ -2,6 +2,7 @@ import db from "../models/index.js";
 import path from "path";
 import { promises as fs } from "fs";
 import { spawn } from "child_process";
+import { where } from "sequelize";
 
 const getAll = async (req, res) => {
   try {
@@ -84,26 +85,157 @@ const getByFace = async (req, res) => {
 
 const findByPk = async (req, res) => {
   try {
-    const { patient_id } = req.body;
-    const response = await db.patients.findByPk(patient_id);
-    if(response){
+    const { patientId } = req.body;
+    console.log({ patientId });
+    console.log(patientId);
+
+    const response = await db.patients.findByPk(patientId);
+    if (response) {
       return res.status(200).json({
         success: true,
         data: response,
-      })
+      });
     }
     return res.status(400).json({
       success: false,
       message: "Not found patient",
-    })
-    
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "An error occurred while get patient.",
       error: error.message,
-    })
+    });
   }
 };
 
-export { getAll, getByFace, findByPk };
+const searchPatient = async (req, res) => {
+  const { cccd } = req.body;
+  try {
+    const response = await db.patients.findAll({
+      where: { cccd: cccd },
+    });
+    if (response && response.length > 0) {
+      res.status(200).json({ success: true, data: response });
+    } else {
+      res.status(201).json({ success: false, message: "Not found patient" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred while get patients.",
+      error: error.message,
+    });
+  }
+};
+
+const deletePatient = async (req, res) => {
+  const { patientId } = req.body;
+  try {
+    const response = await db.patients.update(
+      {
+        status: 0,
+      },
+      {
+        where: { patient_id: patientId },
+      }
+    );
+    if (response) {
+      res.status(200).json({ success: true, message: "Delete successed" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred while delete patients.",
+      error: error.message,
+    });
+  }
+};
+
+const addPatient = async (req, res) => {
+  const {
+    full_name,
+    phone_number,
+    cccd,
+    date_of_birth,
+    avatar,
+    gender,
+    email,
+    address,
+    emergency_contact_name,
+    emergency_contact_phone,
+    blood_type,
+  } = req.body;
+  console.log(req.body)
+
+  try {
+    const response = await db.patients.create({
+      full_name: full_name,
+      phone_number: phone_number,
+      cccd: cccd,
+      date_of_birth: date_of_birth,
+      avatar: avatar,
+      gender: gender,
+      email: email,
+      address: address,
+      emergency_contact_name: emergency_contact_name,
+      emergency_contact_phone: emergency_contact_phone,
+      blood_type: blood_type,
+    });
+    if (response) {
+      res.status(200).json({
+        success: true,
+        message: "Add patient successed",
+        patientId: response.patient_id,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "An error occurred while add patinet.",
+      error: error.message,
+      error
+    });
+  }
+};
+
+const editPatient = async (req, res) => {
+  const formValues = req.body;
+  console.log(formValues);
+  try {
+    const response = await db.patients.update(
+      {
+        email: formValues.email,
+        phone_number: formValues.phone,
+        full_name: formValues.fullName,
+        gender: formValues.gender,
+        date_of_birth: formValues.dateOfBirth,
+        address: formValues.address,
+        cccd: formValues.cccd,
+        emergency_contact_name: formValues.emergency_contact_name,
+        emergency_contact_name: formValues.emergency_contact_name,
+      },
+      {
+        where: { patient_id: formValues.patientId },
+      }
+    );
+    if (response) {
+      return res
+        .status(200)
+        .json({ success: true, data: "Staff updated successfully" });
+    }
+  } catch (error) {
+    console.error("Error updating staff:", error);
+    return res.status(500).json({
+      message: "An error occurred while get staffs.",
+      error: error.message,
+    });
+  }
+};
+export {
+  getAll,
+  getByFace,
+  findByPk,
+  searchPatient,
+  deletePatient,
+  addPatient,
+  editPatient,
+};

@@ -1,3 +1,10 @@
-.patient-item {
-    cursor: pointer;
+.patients {
+    .patient-item {
+        cursor: pointer;
+    }
+
+    input {
+        outline: none;
+    }
+
 }

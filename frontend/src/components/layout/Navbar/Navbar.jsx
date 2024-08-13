@@ -8,12 +8,15 @@ import "./Navbar.scss";
 const Nav = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState("");
+  const [userRole, setUserRole] = useState("");
   const [isSelected, setIsSelected] = useState("Home");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("userRole");
     if (storedToken) {
       setToken(storedToken);
+      setUserRole(storedRole);
     }
   }, []);
 
@@ -30,6 +33,8 @@ const Nav = () => {
     navigate(route);
     setIsSelected(selected);
   };
+
+  const navItems = ["Home", "Patients", "Appointments", "Schedules", "Notifications"];
 
   return (
     <div className="d-flex align-items-center justify-content-center">
@@ -56,22 +61,23 @@ const Nav = () => {
             />
 
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {["Home", "Healthcare", "Patients"].map((item, index) => (
+              {navItems.map((item, index) => (
                 <li className="nav-item" key={index}>
                   <button
                     onClick={() => handleNavigation(item.toLowerCase(), item)}
                     className={`nav-link ${isSelected === item ? "active" : ""}`}
                     aria-current={isSelected === item ? "page" : undefined}
+                    disabled={userRole === "4" && item !== "Patients"}
                   >
                     {item}
                   </button>
                 </li>
               ))}
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <button className="nav-link disabled" aria-disabled="true">
                   Disabled
                 </button>
-              </li>
+              </li> */}
             </ul>
 
             {!token ? (

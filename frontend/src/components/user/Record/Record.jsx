@@ -2,25 +2,41 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import bodyImg from "../../../assets/image/body.png";
 import axios from "axios";
-import './Record.scss'; // Import a CSS file for custom styles
+import "./Record.scss"; // Import a CSS file for custom styles
 
 const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
 
 const PatientInfo = ({ patient }) => (
   <div className="patient-info mt-4">
-    <h4 className="fw-bold">Patient Information</h4>
+    <h3 className="">Patient Information</h3>
     <div className="row mt-2">
       <div className="col-md-6">
-        <p><strong>Patient ID:</strong> {patient.patient_id ?? "N/A"}</p>
-        <p><strong>Full Name:</strong> {patient.full_name ?? "N/A"}</p>
-        <p><strong>Phone Number:</strong> {patient.phone_number ?? "N/A"}</p>
-        <p><strong>ID Card:</strong> {patient.cccd ?? "N/A"}</p>
+        <p>
+          <strong>Patient ID:</strong> {patient.patient_id ?? "N/A"}
+        </p>
+        <p>
+          <strong>Full Name:</strong> {patient.full_name ?? "N/A"}
+        </p>
+        <p>
+          <strong>Phone Number:</strong> {patient.phone_number ?? "N/A"}
+        </p>
+        <p>
+          <strong>ID Card:</strong> {patient.cccd ?? "N/A"}
+        </p>
       </div>
       <div className="col-md-6">
-        <p><strong>Date of Birth:</strong> {patient.date_of_birth ?? "N/A"}</p>
-        <p><strong>Gender:</strong> {patient.gender ?? "N/A"}</p>
-        <p><strong>Email:</strong> {patient.email ?? "N/A"}</p>
-        <p><strong>Address:</strong> {patient.address ?? "N/A"}</p>
+        <p>
+          <strong>Date of Birth:</strong> {patient.date_of_birth ?? "N/A"}
+        </p>
+        <p>
+          <strong>Gender:</strong> {patient.gender ?? "N/A"}
+        </p>
+        <p>
+          <strong>Email:</strong> {patient.email ?? "N/A"}
+        </p>
+        <p>
+          <strong>Address:</strong> {patient.address ?? "N/A"}
+        </p>
       </div>
     </div>
   </div>
@@ -28,7 +44,7 @@ const PatientInfo = ({ patient }) => (
 
 const HealthIndicators = ({ indicators }) => (
   <div className="health-indicators">
-    <h4 className="fw-bold">Health Indicators</h4>
+    <h3 className="fw-bold">Health Indicators</h3>
     <div className="indicator-container border border-1 rounded-3 p-3">
       <button className="btn btn-primary rounded-5 float-end">Update</button>
       <div className="row">
@@ -60,8 +76,7 @@ const Record = () => {
   const [healthIndicators, setHealthIndicators] = useState([]);
   const [medicalRecords, setMedicalRecords] = useState({});
   const [patient, setPatient] = useState({});
-  const { patient_id } = useParams();
-
+  const { patientId } = useParams();
   const fetchData = useCallback(async (endpoint, payload, setter) => {
     try {
       const response = await axios.post(`${baseUrl}${endpoint}`, payload);
@@ -72,20 +87,26 @@ const Record = () => {
       console.error(`Error fetching data from ${endpoint}:`, error);
     }
   }, []);
-
   useEffect(() => {
     const fetchAllData = async () => {
-      await fetchData("/api/medical-records/getById", { patient_id }, setMedicalRecords);
-      await fetchData("/api/patient/getById", { patient_id }, setPatient);
-      await fetchData("/api/record-indicators/getByPatient", { record_id: patient_id }, setHealthIndicators);
+      await fetchData(
+        "/api/medical-records/getById",
+        { patient_id: patientId },
+        setMedicalRecords
+      );
+      await fetchData("/api/patient/getById", { patientId }, setPatient);
+      await fetchData(
+        "/api/record-indicators/getByPatient",
+        { record_id: patientId },
+        setHealthIndicators
+      );
     };
 
     fetchAllData();
-  }, [patient_id, fetchData]);
+  }, [patientId, fetchData]);
 
   return (
     <div className="record-medical h-100 container">
-      <h1 className="fw-bold text-center mb-4">Medical Record</h1>
       <div className="d-flex flex-column align-items-start mt-2 gap-4">
         <div className="medical-record-details w-100">
           <div className="d-flex gap-3 mb-4">
@@ -104,7 +125,7 @@ const Record = () => {
           <PatientInfo patient={patient} />
         </div>
 
-        <HealthIndicators indicators={healthIndicators} />
+        {/* <HealthIndicators indicators={healthIndicators} /> */}
       </div>
     </div>
   );

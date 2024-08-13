@@ -1,29 +1,56 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Sidebar.scss";
 import { useNavigate } from "react-router-dom";
-import navLogo from "../../../assets/image/logo.png";
+import navLogo from "../../../assets/image/logo-new.png";
 import avt from "../../../assets/image/avt-user.png";
+import { FaUserCircle, FaUser } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
+
 import { CgDarkMode } from "react-icons/cg";
-import { StoreContext } from "../../../context/StoreContext";
 
 const Sidebar = () => {
   const [selected, setSelected] = useState("overview");
-  const { theme, setTheme } = useContext(StoreContext);
+  const [token, setToken] = useState("");
+  const [userRole, setUserRole] = useState("");
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("userRole");
+    if (storedToken) {
+      setToken(storedToken);
+      setUserRole(storedRole);
+    }
+  }, []);
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    if (confirmed) {
+      localStorage.removeItem("token");
+      setToken("");
+      navigate("/");
+    }
   };
 
   const settingsItems = [
     { key: "overview", label: "Overview", badge: 14, path: "" },
     { key: "staffs", label: "Staffs", badge: 14, path: "staff" },
-    { key: "account", label: "Accounts", badge: 2, path: "account" },
-    { key: "health-indicators", label: "Health indicators", badge: 2, path: "health-indicators" },
-    { key: "chart", label: "Health monitoring chart", badge: 2, path: "chart" },
-    { key: "symptoms", label: "Symptoms and diagnosis", badge: 2, path: "symptoms" },
-    { key: "history", label: "Medical history", badge: 2, path: "history" },
+    {
+      key: "health-indicators",
+      label: "Health indicators",
+      badge: 2,
+      path: "health-indicators",
+    },
+    { key: "departments", label: "Departments", badge: 2, path: "departments" },
+    { key: "schedules", label: "Schedules", badge: 2, path: "schedules" },
+    { key: "report", label: "Report", badge: 2, path: "report" },
+    {
+      key: "notifications",
+      label: "Notifications",
+      badge: 2,
+      path: "notifications",
+    },
     { key: "setting", label: "Setting", badge: 2, path: "setting" },
   ];
 
@@ -40,7 +67,9 @@ const Sidebar = () => {
                 setSelected(item.key);
                 navigate(item.path);
               }}
-              className={`list-group-item rounded-5 d-flex p-2 ${selected === item.key ? "isActive" : ""}`}
+              className={`list-group-item d-flex p-2 ${
+                selected === item.key ? "isActive" : ""
+              }`}
             >
               {item.label}
             </li>
@@ -49,20 +78,15 @@ const Sidebar = () => {
       </div>
 
       <div className="mt-auto d-flex">
-        <div className="profile position-relative d-flex align-items-center justify-content-between p-2 rounded-5 mb-2 w-50">
-          <img src={avt} alt="Avatar" className="rounded-5" />
-          <span className="user-name fw-900">Vo Quoc Dinh</span>
-          {/* <div
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            className="fs-2 d-inline-block ms-5"
-          >
-            <CgDarkMode />
-          </div> */}
+        <div className="profile position-relative d-flex align-items-center p-3 rounded-3 w-75 gap-2 mb-3">
+          <FaUserCircle size={32} className="text-secondary" />
+
+          <span className="user-name fw-bold me-4">Vo Quoc Dinh</span>
 
           <ul className="logout-modal">
-            <li>Vo Quoc Dinh</li>
+            <li onClick={() => navigate("/infor")}>Vo Quoc Dinh</li>
             <li>Dark mode</li>
-            <li>Log out</li>
+            <li onClick={handleLogout}>Log out</li>
           </ul>
         </div>
       </div>

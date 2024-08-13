@@ -10,7 +10,7 @@ const hashPassword = (password) => {
 const register = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const existingUser = await db.accounts.findOne({
+    const existingUser = await db.staff.findOne({
       where: { email: email },
     });
     if (existingUser) {
@@ -21,7 +21,7 @@ const register = async (req, res) => {
     }
 
     const hashedPassword = hashPassword(password);
-    await db.accounts.create({ email: email, password: hashedPassword });
+    await db.staff.create({ email: email, password: hashedPassword });
 
     return res.status(200).json({
       success: true,
@@ -39,7 +39,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await db.accounts.findOne({
+    const user = await db.staff.findOne({
       where: { email: email },
     });
     if (!user) {
@@ -58,7 +58,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, role: user.role_id },
+      { id: user.staff_id, role: user.role_id },
       process.env.JWT_SECRET || "secretkey",
       { expiresIn: "1h" }
     );
@@ -67,6 +67,7 @@ const login = async (req, res) => {
       success: true,
       token: token,
       role_id: user.role_id,
+      staffId: user.staff_id,
       message: "Login is successful.",
     });
   } catch (error) {

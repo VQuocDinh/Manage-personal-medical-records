@@ -8,7 +8,7 @@ const AdminLayout = () => {
       <div className="sidebar">
         <Sidebar />
       </div>
-      <div className="content w-100 rounded-5">
+      <div className="content w-100 rounded-3">
         <Outlet />
       </div>
     </div>

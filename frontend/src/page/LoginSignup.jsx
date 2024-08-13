@@ -10,12 +10,12 @@ const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
 const LoginSignup = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState("");
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,27 +29,27 @@ const LoginSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password, confirmPassword } = formValues;
-
     if (!isLogin && password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
-
     const url = isLogin ? "/api/auth/login" : "/api/auth/register";
-
     try {
       const res = await axios.post(`${baseUrl}${url}`, { email, password });
 
       if (isLogin) {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
-          navigate(res.data.role === 1 ? "/admin" : "/user/home");
+          localStorage.setItem("userRole", res.data.role_id.toString());
+          localStorage.setItem("staffId", res.data.staffId);
+          console.log(res.data.role_id)
+          navigate(res.data.role_id === 1 ? "/admin" : "/user/home");
         }
       } else {
         if (res.status === 200) {
           console.log(res.data);
           toast.success(res.data.message);
-          setFormValues({ email: "", password: "", confirmPassword: "" }); // Reset only when registration is successful
+          setFormValues({ email: "", password: "", confirmPassword: "" });
         }
       }
     } catch (error) {
@@ -69,7 +69,7 @@ const LoginSignup = () => {
   return (
     <div className="login-signup m-auto w-50">
       <div className="form__container d-flex flex-column w-75 justify-content-center">
-        <h1 className="fw-900">
+        <h1 className="fw-bold">
           {isLogin
             ? "Welcome to the Personal Profile Management System"
             : "Register an Account"}

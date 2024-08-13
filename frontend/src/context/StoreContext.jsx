@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback } from "react";
 
 export const StoreContext = createContext(null);
 
@@ -9,7 +9,23 @@ const StoreContextProvider = (props) => {
   const [staffList, setStaffList] = useState([]);
   const [patientList, setPatientList] = useState([]);
   const [accountList, setAccountList] = useState([]);
+  const [roleList, setRoleList] = useState([]);
+  const [departmentList, setDepartmentList] = useState([]);
   const [healthIndicatorList, setHealthIndicatorList] = useState([]);
+  const [patientDetail, setPatientDetail] = useState({});
+  const [patientRecordsDetail, setPatientRecordsDetail] = useState(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('patientRecordsDetail');
+    if (storedData) {
+      setPatientRecordsDetail(JSON.parse(storedData));
+    }
+  }, []);
+
+  const updatePatientRecordsDetail = (data) => {
+    setPatientRecordsDetail(data);
+    localStorage.setItem('patientRecordsDetail', JSON.stringify(data));
+  };
 
   const fetchAllStaff = async () => {
     try {
@@ -33,44 +49,65 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  const fetchAllAccount = async () => {
+  const fetchAllIndicators = async () => {
     try {
-      const res = await axios.get(`${baseUrl}/api/account/get`);
+      const res = await axios.get(`${baseUrl}/api/health-indicator/get`);
       if (res.data.success) {
-        setAccountList(res.data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching account list", error);
-    }
-  };
-
-  const fetchAllIndicators = async ()=>{
-    try {
-      const res = await axios.get(`${baseUrl}/api/health-indicator/get`)
-      if (res.data.success){
-        setHealthIndicatorList(res.data.data)
+        setHealthIndicatorList(res.data.data);
       }
     } catch (error) {
       console.error("Error fetching health indicators list", error);
-
     }
-  }
+  };
+
+  const fetchRole = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/role/get`);
+      if (response.data.success) {
+        setRoleList(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching staff list", error);
+    }
+  };
+
+  const fetchDepartment = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/departments/get`);
+      if (response.data.success) {
+        setDepartmentList(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching department list", error);
+    }
+  };
 
   useEffect(() => {
     fetchAllStaff();
     fetchAllPatient();
-    fetchAllAccount();
-    fetchAllIndicators()
-    // fetchHealthIndicatorsByPatient()
+    fetchAllIndicators();
+    fetchRole();
+    fetchDepartment();
+  
   }, []);
 
   const contextValue = {
     theme,
     setTheme,
     staffList,
+    setStaffList,
     patientList,
+    setPatientList,
     accountList,
     healthIndicatorList,
+    roleList,
+    setRoleList,
+    departmentList,
+    patientDetail,
+    setPatientDetail,
+    patientRecordsDetail,
+    setPatientRecordsDetail,
+    updatePatientRecordsDetail
   };
 
   return (

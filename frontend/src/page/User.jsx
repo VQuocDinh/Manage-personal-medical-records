@@ -23,7 +23,7 @@ const CustomerLayout = () => {
         <Navbar />
       </div>
 
-      <div className="content w-100 h-100 p-5">
+      <div className="content h-100 w-100 p-5">
         <Outlet />
       </div>
     </div>

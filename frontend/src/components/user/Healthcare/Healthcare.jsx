@@ -7,7 +7,6 @@ const Healthcare = () => {
       <h1 className="fw-bold text-center mb-4">Healthcare</h1>
       
       <div className="w-100 d-flex gap-3 h-75">
-        {/* Symptoms Input */}
         <div className="w-50 d-flex flex-column">
           <input
             type="text"
@@ -16,7 +15,6 @@ const Healthcare = () => {
           />
         </div>
 
-        {/* Diagnosis and Examination Inputs */}
         <div className="w-50 d-flex flex-column gap-3">
           <input
             type="text"
